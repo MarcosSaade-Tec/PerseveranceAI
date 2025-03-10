@@ -23,6 +23,7 @@ def coordinate_to_rowcol(coordinate):
 
 # Start position and goal in coordinates
 initial_pos_coordinates = (2850, 6400)
+
 goal_coordinates = (3150, 6800)
 
 # Convert to row, col
@@ -54,12 +55,6 @@ class PerseveranceRover(SearchProblem):
         left = mars_map[row][col-1]
         down = mars_map[row+1][col]
 
-        # Podemos diagonal? Luego le preguntamos a Leonardo
-        # print(mars_map[row+1][col+1])
-        # print(mars_map[row+1][col-1])
-        # print(mars_map[row-1][col+1])
-        # print(mars_map[row-1][col-1])
-
         if right - current < 0.25 and right != -1:
             actions.append('r')
         if left - current < 0.25 and left != -1:
@@ -88,11 +83,30 @@ class PerseveranceRover(SearchProblem):
     def initial_state(self):
         return initial_pos
     
+    def cost(self, state, action, state2):
+        return 1
 
-depth_first_search = depth_first(PerseveranceRover())
-result = depth_first_search.solve()
-print(result.state)
+    def heuristic(self, state):
+        """ 
+            Heuristic is the distance to the goal
+        """
+        
+        distance = 0
+
+        distance += abs(state[0] - goal[0])
+        distance += abs(state[1] - goal[1])
+
+        return distance
+    
+
+### Los algoritmos de busqieda no informada no resuelven el problema en un tiempo razonable ###
+# depth_first_search = depth_first(PerseveranceRover())
+# print(depth_first_search.state)
 
 # breadth_first_search = breadth_first(PerseveranceRover())
-# result = breadth_first_search.solve()
-# print(result.state)
+# print(breadth_first_search.state)
+
+
+astar_search = astar(PerseveranceRover())
+print(astar_search.state)
+print(astar_search.path())
