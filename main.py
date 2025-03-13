@@ -34,6 +34,8 @@ goal = coordinate_to_rowcol(goal_coordinates)
 col = initial_pos[0]
 row = initial_pos[1]
 
+MAX_HEIGHT = 0.25
+
 
 class PerseveranceRover(SearchProblem):
     def __init__(self):
@@ -55,13 +57,13 @@ class PerseveranceRover(SearchProblem):
         left = mars_map[row][col-1]
         down = mars_map[row+1][col]
 
-        if right - current < 0.25 and right != -1:
+        if right - current < MAX_HEIGHT and right != -1:
             actions.append('r')
-        if left - current < 0.25 and left != -1:
+        if left - current < MAX_HEIGHT and left != -1:
             actions.append('l')
-        if up - current < 0.25 and up != -1:
+        if up - current < MAX_HEIGHT and up != -1:
             actions.append('u')
-        if down - current < 0.25 and down != -1:
+        if down - current < MAX_HEIGHT and down != -1:
             actions.append('d')
 
         return tuple(actions)
